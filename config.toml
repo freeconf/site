@@ -60,7 +60,6 @@ archived_version = false
 version = "0.0"
 url_latest_version = "https://example.com"
 
-github_repo = "https://github.com/freeconf/restconf/issues"
 github_project_repo = "https://github.com/freeconf/restconf"
 algolia_docsearch = false
 offlineSearch = false

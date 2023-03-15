@@ -33,10 +33,7 @@ Put file in `./yang` to make things easier.
 
 ```
 module hello {
-    revision 0;
-
     leaf message {
-        config false;
         type string;
     }
 }
@@ -132,4 +129,4 @@ curl http://localhost:8080/restconf/data/hello:
 
 ## Done
 
-That's it.  See this rest of the documentation on how to expand from here.
+That's it.  See [YANG Primer]({{< ref "../Reference/yang-primer" >}}) for more information on the YANG modeling langage and [Basic Components]({{< ref "../Reference/basic-components" >}}) on to integrate with your existing code base.

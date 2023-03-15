@@ -13,7 +13,7 @@ It is essential to note that YANG is not limited to RESTCONF and can be employed
 
 ## module 
 
-Every YANG file starts `module {}` statement.  All further definitions are contained inside the `{}` brackets which can contain (but not limited to) any of the follow. 
+Every YANG file starts `module {}` statement.  All further definitions are contained inside the `{}` brackets. 
 
 ```
 module car {
@@ -88,7 +88,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:
@@ -112,7 +112,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:
@@ -151,6 +151,38 @@ module car {
 }
 ```
 
+```
+curl https://server/restconf/data/car:
+
+{
+  "cylinders":[
+    {
+      "num": 1,
+      "firingOrder": 1
+    }
+    {
+      "num": 2,
+      "firingOrder": 4
+    }
+    {
+      "num": 3,
+      "firingOrder": 3
+    }
+    {
+      "num": 4,
+      "firingOrder": 2
+    }
+  ]
+}
+
+curl https://server/restconf/data/car:cylinders=1
+
+{
+  "num": 1,
+  "firingOrder": 1
+}
+```
+
 [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.8)
 
 ### container/leaf
@@ -168,7 +200,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:
@@ -193,7 +225,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:
@@ -216,7 +248,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl -X POST https://server/restconf/data/car:start
@@ -245,7 +277,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl -X POST -d '{"throttle":32}' https://server/restconf/data/car:drive
@@ -259,7 +291,7 @@ curl -X POST -d '{"throttle":32}' https://server/restconf/data/car:drive
 
 ### container/action/input/output
 
-`action` is exactly like `rpc` except `rpc` are only inside `module` and `action` is used elsewhere.  This is only because of historical reasons.
+For historical reasons, `action` is exactly like `rpc` except `rpc` are only allowed inside `module` and `action` is used everywhere else.
 
 ```
 module car {
@@ -293,7 +325,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:flatTire
@@ -315,7 +347,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:flatTire
@@ -333,7 +365,7 @@ module car {
 }
 ```
 
-Possible response:
+Possible request/responses:
 
 ```
 curl https://server/restconf/data/car:
