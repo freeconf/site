@@ -1,6 +1,6 @@
-# Docsy Example
+# FreeCONF site freeconf.org
 
-[Docsy][] is a [Hugo theme module][] for technical documentation sites, providing easy
+Uses [Docsy][] starter site which is a [Hugo theme module][] for technical documentation sites, providing easy
 site navigation, structure, and more. This **Docsy Example Project** uses the Docsy
 theme component as a hugo module and provides a skeleton documentation structure for you to use.
 You can clone/copy this project and edit it with your own content, or use it as an example.
@@ -25,21 +25,7 @@ dashboard][deploys], or this [alternate dashboard][].
 
 This is not an officially supported Google product. This project is currently maintained.
 
-## Using the Docsy Example Project as a template
-
-A simple way to get started is to use this project as a template, which gives you a site project that is set up and ready to use. To do this: 
-
-1. Click **Use this template**.
-
-2. Select a name for your new project and click **Create repository from template**.
-
-3. Make your own local working copy of your new repo using git clone, replacing https://github.com/me/example.git with your repo’s web URL:
-
-```bash
-git clone --depth 1 https://github.com/me/example.git
-```
-
-You can now edit your own versions of the site’s source files.
+## Setup
 
 If you want to do SCSS edits and want to publish these, you need to install `PostCSS`
 
