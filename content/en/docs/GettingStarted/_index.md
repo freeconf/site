@@ -3,7 +3,7 @@ title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
 description: >
-  Adding management to your application
+  5 minute guide to using FreeCONF today.
 ---
 
 {{% pageinfo color="primary" %}}

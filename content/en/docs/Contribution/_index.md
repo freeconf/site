@@ -1,6 +1,8 @@
 ---
 title: "Contributing"
 weight: 10
+description: >
+  How to get involved.
 ---
 
 ## Reporting an Issue or Requesting a Feature
