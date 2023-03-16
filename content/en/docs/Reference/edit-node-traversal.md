@@ -1,6 +1,9 @@
 ---
 title: "Node Traversal"
 weight: 1000
+description: >
+  In-depth details on developing your applications using FreeCONF and 
+  understanding the sequence of callbacks when editing node structures.
 ---
 
 This is an in-depth, advanced description about how Node implementations handle edits.

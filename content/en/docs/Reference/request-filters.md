@@ -1,6 +1,9 @@
 ---
 title: "Request Filters"
 weight: 1000
+description: >
+  How to register web request filters to read custom request headers
+  and how to relay that information to your nodes.
 ---
 
 ## RESTCONF HTTP Request Access

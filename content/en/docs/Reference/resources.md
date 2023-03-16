@@ -1,6 +1,8 @@
 ---
 title: "Resources"
 weight: 20
+description: >
+  Links of useful resources on the Internet
 ---
 
 * [FreeCONF YANG Parser](https://github.com/freeconf/yang)

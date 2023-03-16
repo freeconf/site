@@ -22,6 +22,6 @@ To illustrate this concept, consider the hypothetical scenario where an individu
 **For Example:**
 
 * An alert tool can read toaster's YANG file and discover there are two events exported by the toaster service: `toasterOutOfBread` and `toasterRestocked`.  Operator can configure alert tool to notify operator on Slack when toaster is out of bread.
-* A configuration can get the current configuration and then send an updated copy relying on the configuration being rejected if invalid for any reason.
-* A metrics tool can pull metrics in JSON format and at any frequency they like.  In addition, the metrics tool can parse the YANG an pass along the field descriptions to graphing system.  Pushing metrics is possible but requires special server library support.
-* A web interface can do any of the above and also call RPC functions by just POSTing JSON data as input and parsing JSON output response
+* A configuration can get the current toaster configuration and then send an updated copy relying on the configuration being rejected if invalid for any reason.
+* A metrics tool can pull toast making metrics in JSON format and at any frequency they like.  In addition, the metrics tool can parse the YANG and pass along the field descriptions to graphing system such as Grafana.  Pushing metrics is possible but requires special server library support.
+* A toaster, web admin portal can do any of the above and also call RPC functions like toasting bread by just POSTing JSON data as input and parsing the JSON output response

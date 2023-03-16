@@ -29,7 +29,7 @@ go run github.com/freeconf/yang/cmd/fc-yang get -dir 'yang'
 
 ## Step 3.) Create a basic YANG file
 
-Put file in `./yang` to make things easier.
+Create file `./yang/hello.yang` to describe your application management.
 
 ```
 module hello {
@@ -77,7 +77,8 @@ func main() {
 	//             there are many options in nodeutil package to base your
 	//             implementation on.  Here we use reflection because our yang file aligns
 	//             with out application data structure.
-	d.Add("hello", nodeutil.Reflect{}.Object(&app))
+	rootNode := nodeutil.Reflect{}.Object(&app)
+	d.Add("hello", rootNode)
 
 	// create the RESTCONF server
 	restconf.NewServer(d)

@@ -1,6 +1,8 @@
 ---
 title: "YANG Primer"
 weight: 1
+description: >
+  Quickstart on the most used parts of the management modeling language.
 ---
 
 YANG is a language utilized for modeling the management functions of applications. The primary functions of a YANG file are to enable remote tools to comprehend a server's management functions, enable servers to accurately provide defined management functions, and generate documentation for individuals seeking to understand a server's management functions. As a software engineer who implements management functions, it is crucial to understand how to create YANG files. Although there are numerous books on the subject, this document will provide a high-level understanding. It is recommended to consult the [YANG RFC](https://datatracker.ietf.org/doc/html/rfc7950) for a comprehensive guide on the language.

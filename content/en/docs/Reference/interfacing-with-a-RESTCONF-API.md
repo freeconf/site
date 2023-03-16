@@ -1,6 +1,8 @@
 ---
 title: Using RESTCONF
 weight: 3
+description: >
+  Interfacing with a RESTCONF API as a tool, CLI or script
 ---
 This is about consuming a RESTCONF API, not building one.  In short, if you know REST then you know RESTCONF.  There are some really cool features however that will find useful and a few conventions that would be good to learn.
 

@@ -13,6 +13,4 @@ In 2014, I transitioned to a new role in the networking field, where I became fa
 
 As a user of these standards, I was impressed with how they addressed interoperability, which led me to envision the potential for an open-source implementation of these standards that could be used in general-purpose application development. This solution would break free from the limitations of proprietary management tools and the plugin-oriented systems that I had contributed to in the past.
 
-Between 2015 and the present day, I have been actively implementing the YANG and RESTCONF standards. Although I initially spent two months working on the project alone, the rest of the time was spent developing and supporting the library in a production environment, ensuring its stability and ease of use.
-
-Throughout the development process, my main objectives were to ensure that the library did not interfere with developers' work and to make complex tasks possible while keeping simpler tasks easy.
+Between 2015 and the present day, I have been actively implementing the YANG and RESTCONF standards. Throughout the development process, my main objectives were to ensure that the library did not interfere with developers' work and to make complex tasks possible while keeping simpler tasks easy.
