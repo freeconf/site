@@ -1,5 +1,5 @@
 ---
-title: "Node Traversal"
+title: "Edit Traversal"
 weight: 1000
 description: >
   In-depth details on developing your applications using FreeCONF and 

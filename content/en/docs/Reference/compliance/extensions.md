@@ -32,9 +32,9 @@ With no MIME types or `?simplified` in URL, you get
 Input can have namespaces or not, doesn't matter.  But if they are supplied, they must be correct. 
 
 **Rational(s):**
-* Exposes how YANG files are organized and often that shouldn't matter to API comsumer
-* unwelocome noisy stutter in data returns 
-* Only usefuil for rare name collisions which should be avoided anyway to make APIs more clear anyway
+* Exposes how YANG files are organized and often that shouldn't matter to API consumer
+* noisy, stutter in data returns 
+* Only useful for rare name collisions which should be avoided anyway to make APIs more clear anyway
 
 ### Simplified base URL
 
@@ -107,7 +107,7 @@ With no MIME types or `?simplified` in URL, you get
 
 ### URL Parameters
 
-[Adding URL param]({{< relref "../interfacing-with-a-restconf-api#custom-url-params" >}})
+[FreeCONF specific URL params]({{< relref "../interfacing-with-a-restconf-api#custom-url-params" >}})
 
 **Rational:**
 * Very useful when creating web UIs
@@ -131,4 +131,4 @@ module fileStructure {
 ```
 
 **Rational:**
-* Recursive relationships should be avoided when possible but sometimes unavoidable so being able to model it is important.  Implementors should use caution to ensure the data model is not recursive as well.  Also when developing tools that navigate the YANG AST, be sure to use flag that denotes a recursive defintion to avoid a stack overflow.
+* Recursive relationships should be avoided when possible but sometimes unavoidable so being able to model it is important.  Implementors should use caution to ensure the data model is not recursive as well.  Also when developing tools that navigate the YANG AST, be sure to use flag that denotes a recursive defintion to avoid indefinite recusion.
