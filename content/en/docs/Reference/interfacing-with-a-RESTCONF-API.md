@@ -28,6 +28,11 @@ Basic for is this : `/restconf/data/{module}:{path}[?params]`
   * `content=nonconfig` - return only metric data
   * `with-defaults=trim` - Do not return leaf values if they match the default value.  This is useful for determining what a configuration user may have actually changed versus what configuration a device is actually using.
   * `fields=a;b/c` - returns only select data paths.  Note: you'll need to encode parameters depending on your http client libraries.  For example this would be `fields=a%3db/c`
+
+### Custom URL params
+
+FreeCONF adds a few extra, useful parameters when retrieving data
+
   * `fc.xfields=a;b/c` - inverse of fields in that it returns all fields except specified.  Again watch the encoding of the `;` as detailed above.
   * `fc.range=b/c!N-M` - returns rows N thru M inclusive in list b/c
   * `fc.max-node-count=N` - increases or decreases the maximum allowed data to be returned.  There are limits by default to ensure unbounded requests do not bog down system. 
