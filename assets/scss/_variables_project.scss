@@ -5,3 +5,9 @@ Add styles or override variables from the theme here.
 */
 
 $secondary: chocolate;
+
+.side-by-side {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: 10px;
+}

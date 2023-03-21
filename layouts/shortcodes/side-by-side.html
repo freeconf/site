@@ -1,0 +1,9 @@
+{{ $cols := split .Inner "||" }}
+
+<div class="side-by-side">
+{{ range $cols }}
+   <div>
+   {{ . | markdownify }}
+   </div>
+{{ end }}
+</div>
