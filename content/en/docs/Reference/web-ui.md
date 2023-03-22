@@ -20,13 +20,13 @@ With APIs developed with FreeCONF, each implemention has the control to only rea
 
 ## Model Driven
 
-Unique to FreeCONF, clients can request any part of the YANG in JSON form and dynamically building user interfaces.  
+Unique to FreeCONF, clients can request any part of the YANG in JSON form and dynamically build user forms, navigation and report interfaces.
 
 **Examples include:**
 
 1. select list options from leaf enumerations
 2. list of available columns in a table
-3. descriptions of every object, list and field
+3. tooltip descriptions of every object, list and field
 4. data types for any field.
 5. client-side form validation thru string patterns and number ranges 
 6. custom UI meta data thru extensions such as

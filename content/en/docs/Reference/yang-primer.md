@@ -5,11 +5,13 @@ description: >
   Quickstart on the most used parts of the management modeling language.
 ---
 
-YANG is a language utilized for modeling the management functions of applications. The primary functions of a YANG file are to enable remote tools to comprehend a server's management functions, enable servers to accurately provide defined management functions, and generate documentation for individuals seeking to understand a server's management functions. As a software engineer who implements management functions, it is crucial to understand how to create YANG files. Although there are numerous books on the subject, this document will provide a high-level understanding. It is recommended to consult the [YANG RFC](https://datatracker.ietf.org/doc/html/rfc7950) for a comprehensive guide on the language.
+YANG is a language utilized for modeling the management functions of applications. The primary function of YANG files are to enable remote tools to comprehend a server's management functions, enable servers to accurately provide defined management functions, and generate documentation for individuals seeking to understand a server's management functions. As a software engineer who implements management functions, it is crucial to understand how to create YANG files. Although there are numerous books on the subject, this document will provide a high-level understanding. It is recommended to consult the [YANG RFC](https://datatracker.ietf.org/doc/html/rfc7950) for a comprehensive specification of the language.
 
 If you are familiar with other interface definition languages such as gRPC or OpenAPI, you will find several similarities with YANG. However, YANG extends beyond these languages to account for management-specific aspects.
 
-It is essential to note that YANG is not limited to RESTCONF and can be employed with other communication protocols, such as NETCONF, and essentially any other communication protocol.
+It is essential to note that YANG is not limited to RESTCONF and can be employed with other communication protocols, such as NETCONF or custom protocols.
+
+If you familiar with YANF and RESTCONF already, some these responses might look different.  See [Compliance]({{< relref "compliance/extensions" >}} ) on how to control this.
 
 ## Data Definitions
 
@@ -26,7 +28,7 @@ module car {
 }
 ```
 
-There is always just a single module.
+There is always just a single module in a YANG file.
 
 [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.1)
 
@@ -55,7 +57,7 @@ While the base URL of `/restconf/data/` is not strictly neccessary, it is pretty
 
 [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.6)
 
-### leaf types
+### all possible leaf types
 
 | Name | Description |
 |------|-------------|
@@ -293,7 +295,7 @@ curl -X POST -d '{"throttle":32}' https://server/restconf/data/car:drive
 
 ### container/action/input/output
 
-For historical reasons, `action` is exactly like `rpc` except `rpc` are only allowed inside `module` and `action` is used everywhere else.
+For historical reasons, `action` is exactly like `rpc` except `rpcs` are only allowed inside `module` and `action` is used everywhere else.
 
 ```
 module car {

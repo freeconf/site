@@ -13,7 +13,7 @@ By default FreeCONF's intentions is for strict compliance with RFC.  There are s
 
 If you submit `application/yang-data+json` in either `Accept` or `Content-Type` in HTTP request headers, you get JSON with namespaces per RFC
 
-**Strict Example Response or Request:**
+**Strict Example Response:**
 ```
 {
     "car:engine":{"speed":10,"x:status":running}
@@ -22,19 +22,19 @@ If you submit `application/yang-data+json` in either `Accept` or `Content-Type` 
 
 With no MIME types or `?simplified` in URL, you get
 
-**Optional Example Response or Request:**
+**Optional Example Response:**
 ```
 {
     "engine":{"speed":10,"status":running}
 }
 ```
 
-Input can have namespaces or not, doesn't matter.  But if they are supplied, they must be correct. 
+`PUT`, `PATCH` or `POST` requests can have namespaces or not, doesn't matter.  But if they are supplied, they must be correct. 
 
 **Rational(s):**
-* Exposes how YANG files are organized and often that shouldn't matter to API consumer
-* noisy, stutter in data returns 
-* Only useful for rare name collisions which should be avoided anyway to make APIs more clear anyway
+* namespaces expose how YANG files are organized and often that shouldn't matter to API consumer.  It might matter to another machine (m2m) in which case proper MIME types would be used and this simplified version wouldn't matter.
+* added noise in data and primary data stutter
+* only useful for rare name collisions which should be avoided anyway to make APIs more clear anyway
 
 ### Simplified base URL
 

@@ -2,7 +2,7 @@
 title: "Basic Components"
 weight: 2
 description: >
-  Six basic components when developing with FreeCONF, 
+  Six basic components when developing with FreeCONF.
 ---
 When using the FreeCONF developer API you'll likely be interfacing with these six FreeCONF components:
 

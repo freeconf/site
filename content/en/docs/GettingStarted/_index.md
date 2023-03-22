@@ -109,7 +109,7 @@ Create this file with static configuration for your application and accompanying
 }
 ```
 
-## Step 6.) Startup you application
+## Step 6.) Startup your application
 
 ```bash
 go run ./main.go
