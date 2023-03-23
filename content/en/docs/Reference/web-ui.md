@@ -27,9 +27,9 @@ Unique to FreeCONF, clients can request any part of the YANG in JSON form and dy
 1. select list options from leaf enumerations
 2. list of available columns in a table
 3. tooltip descriptions of every object, list and field
-4. data types for any field.
+4. data types and labels for any form field
 5. client-side form validation thru string patterns and number ranges 
-6. custom UI meta data thru extensions such as
+6. custom UI meta data thru YANG extensions such as
    1. marking password fields
    2. marking fields that require custom handlers
    3. fields that should be shown to advanced users
@@ -80,9 +80,9 @@ Have REST methods that cannot be captured in RESTCONF? Just register custom web 
 
 ## Reactive Using notifications
 
-Subscribing to `notifications` is [one line of javascript]({{< ref "interfacing-with-a-RESTCONF-API.md#subscribing-to-events-in-web-browser" >}}) with no additional javascript library required.  Notifications aren't just for alerts. One of the more useful notifications is for data has changed in back-end from possibly another user edit and front-end should reload data.
+Subscribing to `notifications` is [one line of javascript]({{< ref "interfacing-with-a-RESTCONF-API.md#subscribing-to-events-in-web-browser" >}}) with no additional javascript library required unlike websockets.  Notifications aren't just for alerts. One of the more useful notifications is for data has changed in back-end from possibly another user edit and front-end should reload data.
 
-You can serve any number of modules in an application should you need to isolate your web-only functions.
+You can serve any number of modules in an application should you need to isolate your web-only functions.  For example `car` module and `car-web` module both from the same server.
 
 You might have expected websockets for notifications.  Websockets would still require implement a publish and subscribe layer on top of the "socket".  HTTP/2 and SSE this is no longer neccessary resulting in faster and easier code with little risk of orphaned subscriptions.
 
