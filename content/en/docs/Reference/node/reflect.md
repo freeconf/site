@@ -5,16 +5,18 @@ description: >
   When your application objects and field names mostly align with your YANG model
 ---
 
-NOTE: You don't need perfect alignment with names, any small variations can be managed by combining Reflect and [Extend]({{< relref "extend" >}}).  To that end, do not expect magical powers from Reflect to coerse your field types to YANG types, again, that's where [Extend]({{< relref "extend" >}}) comes in.
+## Usecases: 
+* CRUD to Go structs
+* CRUD to Go maps or slices
 
-**Items of note:**
-* `Reflect` is by far the most difficult node to learn
-* Currently Reflect doesn't attempt to use reflection to implement `notifications` or `actions/rpcs` but again, you can use `Reflect` with `Extend`.
-* Names in YANG can be `camelCase`, `kabob-case` or `snake_case` interchangablely and when your Go public field are in `CamelCase`.
+## Special Notes
+* You don't need perfect alignment with Go field names and YANG to use `Refect`. Let `Reflect` do the bulk of heavy lifting for you and capture small variations by combining with [Extend]({{< relref "extend" >}}).  To that end, do not expect magical powers from `Reflect` to coerse your custom field types to YANG types.
+* Currently `Reflect` doesn't attempt to use reflection to implement `notifications` or `actions/rpcs` but again, you can combine `Reflect` with `Extend`.
+* Names in YANG can be `camelCase`, `kabob-case` or `snake_case` interchangablely. Your Go public field are obviously in `CamelCase`.
 
 ## Simple Example
 
-Perfect alignment of field names to names in YANG.
+When you happen to have perfect alignment of field names to names in YANG.
 
 {{% side-by-side %}}
 **If you have application code like this...**
@@ -62,7 +64,7 @@ node := nodeutil.ReflectChild(app)
 
 ## Map Example
 
-Reflect also supports Go's `map` interface. While this Go code's lack of data structures that might make this difficult to use in Go, if you don't need to handle this data in Go, then this is completely acceptable.  Remember, you can add constraints to yang to validate data.  
+Reflect also supports Go's `map` interface. While this Go code's lack of data structures that might make this difficult to use in Go, if you don't need to handle this data in Go, then this is completely acceptable.  Remember, you can add constraints to yang to ensure the data is validated properly.  
 
 {{% side-by-side %}}
 **If you have application code like this...**
@@ -149,12 +151,13 @@ n := nodeutil.Reflect{OnField: []nodeutil.ReflectField{timeHandler}}.Object(myOb
 
 **tips:** 
 * You can use a variety of criteria for `When` including information defined in YANG like `units` or YANG extensions.
-* You can create a library of handles and combine them as needed.
+* You can create a library of handlers and combine them as needed.
 * Can be used to access private fields.
+* remember, the `OnField` handlers are copied to each nested level of the heirarchy
 
 ## Starting with a List Example
 
-As we've seen, when `Reflect` comes across a list it knows how to handle adding, removing and navigating.  If however, you are mixing node types (e.g. Basic, Extend, etc.) and you want to match a YANG `list` and directly to a Go `slice`, you can use this option.
+As we've seen, when `Reflect` comes across a list it knows how to handle adding, removing and navigating.  If however, you are mixing node types (e.g. `Basic`, `Extend`, etc.) and you want to match a YANG `list` and directly to a Go `slice`, you can use this option.
 
 ```go
 updateCubs := func(v reflect.Value) {
@@ -163,33 +166,3 @@ updateCubs := func(v reflect.Value) {
 n := nodeutil.ReflectList(bear.Cubs, updateCubs)
 ```
 
-## Custom handling for container and list
-
-When `Reflect` drills into a child node, it will create a copy of itself and therefore act the same way for each child.  If you want to change that at any point you would implement `OnChild` or `OnList`
-
-{{% side-by-side %}}
-**If you have application code like this...**
-```go
-type App struct {
-    LastModified time.Time
-}
-```
-||
-**...and YANG like this...**
-```
-module anyName {
-    container bird {        
-        leaf name {
-            type string;
-        }
-    }
-}
-```
-{{% /side-by-side %}}
-
-```go
-updateCubs := func(nodeutil.Reflect, reflect.Value) node.Node {
-    bear.Cubs = v.Value().([]*Cub)
-}
-n := nodeutil.Reflect().Object()
-```
