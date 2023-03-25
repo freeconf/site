@@ -166,3 +166,10 @@ updateCubs := func(v reflect.Value) {
 n := nodeutil.ReflectList(bear.Cubs, updateCubs)
 ```
 
+## Adhoc structs
+
+Create an anonymous struct.  Useful for handing RPC requests or responses.
+
+
+
+[Full Source](https://github.com/freeconf/restconf/blob/master/example/site/reflect_test.go)

@@ -63,3 +63,4 @@ manage := &nodeutil.Extend{
 **tip(s):**
 * When you have a lot of fields of the same type, see [Reflect.OnField]({{< relref "reflect#field-coersion" >}})
 
+[Full Source](https://github.com/freeconf/restconf/blob/master/example/site/extend_test.go)

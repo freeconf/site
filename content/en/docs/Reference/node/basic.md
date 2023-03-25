@@ -274,3 +274,4 @@ manageCmunk := &nodeutil.Basic{
 * use `index` to build a list of keys so you can a.) return items in order and b.) get items by row number
 * you could build the index lazily to avoid doing it if there was no `GetByRow` called.
 
+[Full Source](https://github.com/freeconf/restconf/blob/master/example/site/basic_test.go)
