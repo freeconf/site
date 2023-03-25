@@ -1,15 +1,15 @@
 ---
-title: Extend Nodes
+title: Extend nodes
 weight: 2
 description: >
   When you want to make adjustments to an existing node's implementation
 ---
 
-## Usecases:
+## Use cases:
 * Few isolated changes to an existing node
 * Wrap a CRUD node but customize editing operations, actions or notifications
 
-## Special Notes
+## Special notes
 * If [`Reflect`]({{< relref "reflect" >}}) was a cake and [`Basic`]({{< relref "basic" >}}) was the plate under the cake, then `Extend` would be the frosting.
 * `Extend` is exactly like `Basic` but let's you delegate anything to another node.  So most of `Basic's` documentation also applies here.
 

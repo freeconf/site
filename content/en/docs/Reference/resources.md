@@ -22,7 +22,7 @@ FreeCONF plays an important part of a larger community of people bringing togeth
 * [More Industry YANG files](https://github.com/openconfig/public/tree/master/release/models) - Same as aboive for the OpenConfig quasi-standard
 * [Bartender](https://github.com/dhubler/bartend) - Built with FreeCONF to mix and pour drinks.
 
-## Tools and Implementations
+## Tools and implementations
 
 * [Ultra Config](https://ultraconfig.com.au/) - Manage configurations in the cloud.
 * [MG Soft](https://www.mg-soft.si/) - Thick client to walk RESTCONF compatible endpoints
@@ -32,7 +32,7 @@ FreeCONF plays an important part of a larger community of people bringing togeth
 * [ygot](https://github.com/openconfig/ygot) - Alternative to FreeCONF fo generating Go code from YANG
 * [Watsen Networks SZTP Support](https://watsen.net/docs/sztpd/current/admin-guide/) - For bootstrapping startup configs even before call home requests.
 
-## Related Possiblities
+## Related possiblities
 
 With a little work, these integrations would be possible.  Either FreeCONF can add support for these related protocols or these tools can add support for RESTCONF.  Sponsoring this effort would be welcomed.
 

@@ -5,7 +5,7 @@ description: >
   Read and write JSON as FreeCONF nodes
 ---
 
-## Usecases
+## Use cases
 * have some JSON to feed into a node
 * need to get a node into JSON form
 * feeding or verifying API in unit tests

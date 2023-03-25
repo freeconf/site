@@ -1,20 +1,20 @@
 ---
-title: Reflect Nodes
+title: Reflect nodes
 weight: 1
 description: >
   When your application objects and field names mostly align with your YANG model
 ---
 
-## Usecases: 
-* CRUD to Go structs
-* CRUD to Go maps or slices
+## Use cases: 
+* CRUD on Go structs
+* CRUD on Go maps or slices
 
-## Special Notes
-* You don't need perfect alignment with Go field names and YANG to use `Refect`. Let `Reflect` do the bulk of heavy lifting for you and capture small variations by combining with [Extend]({{< relref "extend" >}}).  To that end, do not expect magical powers from `Reflect` to coerse your custom field types to YANG types.
+## Special notes
+* You don't need perfect alignment with Go field names and YANG to use `Refect`. Let `Reflect` do the heavy lifting for you and capture small variations by combining with [Extend]({{< relref "extend" >}}).  To that end, do not expect magical powers from `Reflect` to coerse your custom field types to YANG types.
 * Currently `Reflect` doesn't attempt to use reflection to implement `notifications` or `actions/rpcs` but again, you can combine `Reflect` with `Extend`.
 * Names in YANG can be `camelCase`, `kabob-case` or `snake_case` interchangablely. Your Go public field are obviously in `CamelCase`.
 
-## Simple Example
+## Simple example
 
 When you happen to have perfect alignment of field names to names in YANG.
 
@@ -62,7 +62,7 @@ app := &App{}
 node := nodeutil.ReflectChild(app)
 ```
 
-## Map Example
+## Map example
 
 Reflect also supports Go's `map` interface. While this Go code's lack of data structures that might make this difficult to use in Go, if you don't need to handle this data in Go, then this is completely acceptable.  Remember, you can add constraints to yang to ensure the data is validated properly.  
 
@@ -110,7 +110,7 @@ n := nodeutil.ReflectChild(app)
 * useful for building validated RESTCONF APIs quickly to be filled in later with structs
 * good for handling a bulk set of configs
 
-## Field Coersion
+## Field coersion
 
 Reflect can do a decent job converting Go primatives to and from YANG leaf types: strings to numbers, numbers to enums, enums to strings, number types to other number types, etc..  If a conversion represents a loss of data or a type can cannot be convert safely, then an error is returned.  To handle the conversion of these values yourself, you can use `Extend` or `Reflect.OnField` .  `Reflect.OnField` is more suited over `Extend` when have a lot of fields of the same type that you want to reuse in a lot of places and not one-offs.
 
@@ -155,7 +155,7 @@ n := nodeutil.Reflect{OnField: []nodeutil.ReflectField{timeHandler}}.Object(myOb
 * Can be used to access private fields.
 * remember, the `OnField` handlers are copied to each nested level of the heirarchy
 
-## Starting with a List Example
+## Starting with a list example
 
 As we've seen, when `Reflect` comes across a list it knows how to handle adding, removing and navigating.  If however, you are mixing node types (e.g. `Basic`, `Extend`, etc.) and you want to match a YANG `list` and directly to a Go `slice`, you can use this option.
 
@@ -170,6 +170,30 @@ n := nodeutil.ReflectList(bear.Cubs, updateCubs)
 
 Create an anonymous struct.  Useful for handing RPC requests or responses.
 
+```go
+  req := struct {
+    Name string
+    Size int
+  } {}
+  n := nodeutil.ReflectChild(&req)
+```
+
+## Go maps
+
+Obviously no validation from compiler but YANG is validating data at least.
+
+```go
+  var req map[string]interface{}
+  n := nodeutil.ReflectChild(&req)
+```
+
+## YANG anydata
+
+YANG has a type called `anydata` which can be anything.  Reflect's default behavior is to keep this as whatever the source node sends. For RESTCONF web requests this:
+* `map[string]interface{}`  - When given loose data
+* `decimal64` - when a number
+* `string` - when given a string
+* `io.Reader` - when given a file uploaded thru `form` mime type. See [Forms]({{< relref "../web-ui/#form-processingfile-uploads" >}})
 
 
 [Full Source](https://github.com/freeconf/restconf/blob/master/example/site/reflect_test.go)

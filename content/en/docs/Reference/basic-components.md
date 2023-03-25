@@ -1,5 +1,5 @@
 ---
-title: "Basic Components"
+title: "Basic components"
 weight: 2
 description: >
   Six basic components when developing with FreeCONF.

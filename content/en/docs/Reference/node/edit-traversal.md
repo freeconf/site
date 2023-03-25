@@ -1,5 +1,5 @@
 ---
-title: Handling Edits
+title: Handling edits
 weight: 1000
 description: >
   In-depth details on developing your applications using FreeCONF and 

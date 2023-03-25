@@ -1,5 +1,5 @@
 ---
-title: "YANG Primer"
+title: "YANG primer"
 weight: 1
 description: >
   Quickstart on the most used parts of the management modeling language.

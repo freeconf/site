@@ -1,5 +1,5 @@
 ---
-title: Doc Generation
+title: Doc generation
 weight: 1000
 description: >
     Generating documentation from your yang files.
@@ -47,7 +47,7 @@ Example:
 sudo apt install graphviz
 ```
 
-## Example Commands
+## Example commands
 
 **Generate HTML with SVG image at top**
 ```
@@ -56,7 +56,7 @@ dot -Tsvg fc-restconf.dot -o fc-restconf.svg
 fc-yang doc -f html -module fc-restconf -title "FreeCONF RESTCONF" -ypath yang > fc-restconf.html
 ```
 
-## Example Output - HTML with SVG
+## Example cutput - HTML with SVG
 
 ![fc-restconf API](/docs-example-html.png)
 

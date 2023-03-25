@@ -1,5 +1,5 @@
 ---
-title: "How Does it Work"
+title: "How does it work?"
 weight: 2
 description: >
   Very High-level Description of How FreeCONF Works

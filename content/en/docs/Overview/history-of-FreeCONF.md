@@ -1,5 +1,5 @@
 ---
-title: "Why the Project"
+title: "Why the project?"
 weight: 4
 ---
 

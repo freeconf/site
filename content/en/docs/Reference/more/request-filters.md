@@ -1,12 +1,12 @@
 ---
-title: "Request Filters"
+title: "Request filters"
 weight: 1000
 description: >
   How to register web request filters to read custom request headers
   and how to relay that information to your nodes.
 ---
 
-## RESTCONF HTTP Request Access
+## RESTCONF HTTP request access
 
 This is useful for custom authorization or general need to access the HTTP request information
 

@@ -1,18 +1,18 @@
 ---
-title: Basic Nodes
+title: Basic nodes
 weight: 3
 description: >
   You're starting from scratch. i.e. Abstract class.
 ---
 
-## Usecases:
+## Use cases:
 * high-level routing areas
 * `list` nodes
 * areas with not a lot of CRUD
 * bridges to systems that are not Go structs (e.g. DB, YAML, external REST APIs, etc.)
 * part of code generation
 
-## Highlevel Routing
+## Highlevel routing
 
 {{% side-by-side %}}
 **If you have application code like this...**
@@ -61,7 +61,7 @@ node := &nodeutil.Basic{
 
 You cannot use `Reflect` here because fields are private but also this sets up `manageBagels` with exactly the context it needs.
 
-## Read-only List from Slice
+## Read-only YANG list from Go slice
 
 List nodes often deal with managing a Go `slice` or a `map` and returning nodes that deal with items in that list. When doing simple navigation, this is all you need.
 
@@ -114,7 +114,7 @@ manageCubs := &nodeutil.Basic{
 }
 ```
 
-## Editable List from Slice
+## Editable YANG list from Go slice
 
 While you could implement this with `OnNext` as above, there is a nice option called `OnNextItem` to helps you keep things a little cleaner. 
 
@@ -198,7 +198,7 @@ manageCubs := &nodeutil.Basic{
 * You might find luck resuing this for different slice types with Go's generics
 * You can imagine here that if drilling into a single `Cub` by key or by row number and the datasource allowed you get those w/o getting the whole list, this would be rather efficient.
 
-## Editable List from map
+## Editable YANG list from Go map
 
 {{% side-by-side %}}
 **If you have application code like this...**
@@ -274,4 +274,4 @@ manageCmunk := &nodeutil.Basic{
 * use `index` to build a list of keys so you can a.) return items in order and b.) get items by row number
 * you could build the index lazily to avoid doing it if there was no `GetByRow` called.
 
-[Full Source](https://github.com/freeconf/restconf/blob/master/example/site/basic_test.go)
+[Full source](https://github.com/freeconf/restconf/blob/master/example/site/basic_test.go)

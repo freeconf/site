@@ -64,7 +64,7 @@ RESTCONF delivers events using SSE(Server State Events) over HTTP.  This is simp
 
 There is no special library required to read these messages and you can subscribe to as many event streams as you want w/o opening a new connection.
 
-## Subscribing to Events in Web Browser:
+## Subscribing to events in web browser:
 
 ```javascript
 // this looks like a new connection, but HTTP/2 sends it over existing connection
@@ -75,7 +75,7 @@ events.addEventListener("message", (e) => {
  });
 ```
 
-### Subscribing to Events in CLI
+### Subscribing to events in CLI
 
 ```bash
 $ curl https://server/restconf/data/car:update
@@ -84,7 +84,7 @@ data: {"tire":{"wear":80}}
 data: {"tire":{"wear":70}}
 ```
 
-### Examples Subscription Paths:
+### Examples subscription paths:
 
 | Path | Description |
 |--|--|
