@@ -2,6 +2,11 @@
 title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 2
+tags:
+  - server
+  - restconf
+  - node
+  - go
 description: >
   5 minute guide to using FreeCONF today.
 ---

@@ -1,9 +1,28 @@
 ---
-title: Dump
-weight: 101
+title: Debugging
+tag:
+  - node
+  - debug
+  - server
+weight: 100
 description: >
-  Debugging aid to see all traffic in/out of a node
+  Techniques for debugging
 ---
+
+## Debug Logging
+
+```go
+import (
+  "github.com/freeconf/yang/fc"
+)
+
+...
+   // turn on debug logging
+   fc.DebugLog(true)
+
+```
+
+## Logging `node` activity
 
 ## Use cases:
 * See all operations performed on a node when you're not sure you are getting the right data in or out.
@@ -11,10 +30,8 @@ description: >
 ## Usage
 
 ```go
-  // replace this
-  n := myNode()
-  // ... with this
-  n := nodeutil.Dump(myNode(), os.Stdout)
+  // wrap all node activity to the node app recursively
+  n := nodeutil.Dump(manageApp(app), os.Stdout)
 ```
 
 **Example Edit**

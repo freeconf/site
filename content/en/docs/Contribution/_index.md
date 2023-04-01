@@ -1,6 +1,6 @@
 ---
 title: "Contributing"
-weight: 10
+weight: 100
 description: >
   How to get involved.
 ---

@@ -1,5 +1,5 @@
 ---
-title: Nodes
+title: Node Details
 weight: 5
 description: >
   Using the FreeCONF API to build your management interface
@@ -11,5 +11,5 @@ Unlike gRPC or OpenAPI, FreeCONF was designed to allow you to work *with* your e
 
 Each node starts from a root node registered with the `Browser` object.  Each node controls how its child nodes are constructed and therefore you can mix node implementations to suit each part of your existing application's design.
 
-If you're not sure where to start, typically a YANG model uses the similar naming for fields and data structures of the application so I would start with [`Reflect`]({{< relref "reflect" >}}) and [`Extend`]({{< relref "extend" >}}). If your code becomes too repetative, then you can start to look at strategies for generating code to replace parts of your current code.  This phased approach is useful because you'll know what code to generate and replace.
+If you're not sure where to start, typically a YANG model uses the similar naming for fields and data structures of the application so I would start with [`Reflect`]({{< relref "../../examples/node-reflect" >}}) and [`Extend`]({{< relref "../../examples/node-extend" >}}). If your code becomes too repetative, then you can start to look at strategies for generating code to replace parts of your current code.  This phased approach is useful because you'll know what code to generate and replace.
 

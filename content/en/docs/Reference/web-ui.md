@@ -3,7 +3,7 @@ title: "Web UIs"
 weight: 1000
 description: >
   Building a Web UI interface to a RESTCONF implementation is pure joy.
-  This is a few tips that will server you well.
+  This is a few tips that will serve you well.
 ---
 
 You can build powerful web interfaces that interface with RESTCONF APIs. While automation is primarily about APIs and not Web UIs, administration portals have proven invaluable in many conditions.  One advantage to serving your web interface with your application is that it is always up to date with the backend.

@@ -1,5 +1,5 @@
 ---
-title: Handling edits
+title: Edit lifecycle
 weight: 1000
 description: >
   In-depth details on developing your applications using FreeCONF and 
