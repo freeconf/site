@@ -16,9 +16,8 @@ While automation is primarily about APIs, building administration portals enable
 
 ### Notes:
 * This example web code is very basic, but you can use advanced web frameworks
-* Be sure to become familiar with [using a RESTCONF API]({{< relref "../../reference/interfacing-with-a-restconf-api" >}}).
-entire are helpful
-* Serving your web interface with your application ensures they are always deployed together and therefor compatible.
+* Read [how to use RESTCONF API]({{< relref "../../reference/interfacing-with-a-restconf-api" >}}) to understand how to navigate data. 
+* Serving your web interface with your application ensures they are always deployed together and therefore compatible.
 
 ![Car Demo](images/screenshot.png)
 
@@ -125,10 +124,10 @@ subscribeToUpdateEventStream();
 
 ### Additional Notes:
 
-* **Register custom request endpoints** - Have REST methods that cannot be captured in RESTCONF? Just register custom web handlers to augment your RESTCONF API with straight REST or gRPC or whatever you like.
+* **Register custom request endpoints** - Not everything has to be handled thru RESTCONF. Use standard web request handlers for any custom endpoints.
 * **Use `notification` for interactive UIs** - Notifications aren't just for alerts. One of the more useful notifications is for data has changed in back-end from possibly another user edit and front-end should reload data
 * **Consider a web-only module** - You can serve any number of modules in an application should you need to isolate your web-only functions.  For example `car` module and `car-web` module both from the same server.
-* **Generate REST API Docs**  - [Generate REST API docs]({{< relref "../../reference/docs" >}}) be reading every detail from the YANG file. Consumable by users that have never even heard of RESTCONF.
+* **Generate REST API Docs**  - [Generate REST API docs]({{< relref "../../reference/docs" >}}) to know what is available from REST.
    ![Car Demo](images/rest-api-html.png)
 
 ```sh
@@ -150,10 +149,6 @@ ${FC_YANG} doc -f md -module ${MODULE} -ypath ${YPATH} > ${MODULE}-api.md
 ```
 
 ## File Uploading
-
-### Notes:
-* You can also add request handlers to Go web server if you don't want to do this in RESTCONF 
-* This would not be compatible with most industry tools but could be useable from your custom clients
 
 ![File Upload](images/file-upload.png)
 
@@ -299,6 +294,9 @@ Combine this with ability to extend the YANG with your own meta data the **possi
 4. fields that should only show if feature flag is on
 
 The path to the meta definitions is just `/restconf/schema/{module}/` and requires header `Accept: application/json` to return the YANG file in JSON form.  You can use all normal RESTCONF navigation features to drill in to the just the part of the YANG file you are interested in.
+
+![File Upload](images/model-driven-rest.png)
+
 
 ![File Upload](images/model-driven.png)
 
