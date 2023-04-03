@@ -6,6 +6,14 @@ description: >
 ---
 This is about consuming a RESTCONF API, not building one.  In short, if you know REST then you know RESTCONF.  There are some really cool features however that will find useful and a few conventions that would be good to learn.
 
+## Adjustable data granularity
+
+Traditional REST APIs struggle with what level of information to return for each GET request and this is called [granularity](https://dzone.com/articles/restful-api-design-principle-deciding-levels-of-gr).  Return too little data and scripts will need to make constant trips for more.  Return too much data and majority of it will likely be unused.  Both situations cause delays and additional resource consumption. 
+
+RESTCONF APIs do not have this issue.  Clients can precisely control the data they want from depth, to list pagination. From selecting fields to excluding fields.
+
+With APIs developed with FreeCONF, each implemention has the control to only read the data that was requested. That is, granularity is not implemented as  a reponse filters like GraphQL.
+
 ## Methods
 
 No surprises here:
@@ -93,4 +101,4 @@ data: {"tire":{"wear":70}}
 
 ## More
 
-When using REST API to build a web interface, checkout [model assisted web UI.]({{< ref "web-ui" >}})
+When using REST API to build a web interface, checkout [model assisted web UI.]({{< relref "../examples/webui" >}})

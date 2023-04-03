@@ -100,7 +100,7 @@ With no MIME types or `?simplified` in URL, you get
 
 ### Uploading files
 
-[Details]({{< relref "../web-ui#form-processingfile-uploads" >}})
+[Details]({{< relref "../../examples/webui#form-processingfile-uploads" >}})
 
 **Rational:**
 * Being able to upload files to a REST API is fundamental to any REST API.

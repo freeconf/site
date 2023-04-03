@@ -1,5 +1,5 @@
 ---
-title: Node Details
+title: Node Development
 weight: 5
 description: >
   Using the FreeCONF API to build your management interface
