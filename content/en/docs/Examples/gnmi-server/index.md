@@ -33,7 +33,7 @@ func main() {
 	app := car.New()
 
 	// where the yang files are stored
-	ypath := source.Path("../yang")
+	ypath := source.Path("../yang:../car")
 
 	// Device is just a container for browsers.  Needs to know where YANG files are stored
 	d := device.New(ypath)
