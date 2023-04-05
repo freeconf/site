@@ -9,26 +9,79 @@ description: >
   Using the gNMIc client to connect to your application  
 ---
 
-gNMIc is a utility that can connect to any appliction that supports gNMI. Here are some working examples of using `gnmic` to connect to the car example application.
+[gNMIc](https://gnmic.openconfig.net/) is a utility that can connect to any appliction that supports gNMI protocol including applications [using the FreeCONF library]({{< relref "../gnmi-server" >}}). You can use `gnmic` from the terminal or use it to [send metrics to InfluxDB, Prometheus, Kafka, NATS](https://gnmic.openconfig.net/user_guide/outputs/output_intro/) and possibly others.
+
+Here are some working examples of using `gnmic` from terminal to connect to the car example application.
+
+## FreeCONF examples source code
+
+Get the FreeCONF example code
+
+```bash
+git clone https://github.com/freeconf/examples fc-examples
+```
 
 ## Setup
 
-1. [Install gNMIc]()
-2. Run gNMI server
+1. [Install the gNMIc](https://gnmic.openconfig.net/#installation) client executable
+2. Run gNMI server with car application registered with server
 ```bash
-cd ../gnmi-server
+cd ./gnmi-server
 go run .
 ```
 
-file: `car.yml`
-```yaml
-address: localhost:8090
-insecure: true
+## Using gnmic
 
+In a separate terminal, go to the directory containing gnmic commands.
 
+```bash
+cd openconfig-gnmi
 ```
 
-Command: `gnmic --config car.yml --model car --path ""`
+## Example commands
+
+```sh
+#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+# Get Data Object
+gnmic --config car.yml get --path car:/
+
+# Get Data Value
+gnmic --config car.yml get --path car:/speed
+
+# Get Data : use model.
+gnmic --config car.yml get --model car --path /
+
+
+# Set Data Object
+gnmic --config car.yml set --update  car:/:::json:::'{"speed":300}'
+
+# Set Data Value
+gnmic --config car.yml set --update-path  car:/speed --update-value 300
+
+
+# Subscribe
+timeout 5s \
+  gnmic --config car.yml sub --model car --path / --sample-interval 1s --heartbeat-interval 2s || true
+
+# Subscribe to just tire metrics : use model
+timeout 5s \
+  gnmic --config car.yml sub --mode once --model car --path /tire || true
+
+# Subscribe to just tire metrics
+timeout 5s \
+  gnmic --config car.yml sub --mode once --path car:/tire || true
+
+# Subscribe to just tire 1 metrics
+timeout 5s \
+  gnmic --config car.yml sub --mode once --path car:/tire=1 || true
+```
+
+## Example Output
+
+Command: `gnmic --config car.yml --model car --path /`
 ```json
 [
   {
@@ -80,32 +133,4 @@ Command: `gnmic --config car.yml --model car --path ""`
     ]
   }
 ]
-```
-
-```sh
-#!/usr/bin/env bash
-
-set -euf -o pipefail
-
-# Get Data : full path
-gnmic --config car.yml get --path car:/
-
-# Get Data : use model
-gnmic --config car.yml get --model car --path ""
-
-# Set Data
-gnmic --config car.yml set --update  car:/:::json:::'{"speed":300}'
-
-# Subscribe
-timeout 5s \
-  gnmic --config car.yml sub --model car --path "" --sample-interval 1s --heartbeat-interval 2s || true
-
-# Subscribe to just tire metrics : use model
-timeout 5s \
-  gnmic --config car.yml sub --mode once --model car --path "/tire" || true
-
-# Subscribe to just tire metrics : full path
-timeout 5s \
-  gnmic --config car.yml sub --mode once --path "car:/tire" || true
-
 ```
