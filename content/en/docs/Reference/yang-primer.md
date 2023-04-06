@@ -22,6 +22,7 @@ Every YANG file starts `module {}` statement.  All further definitions are conta
 ```
 module car {
   prefix "c";
+  namespace "yourcompany.com";
   revision 2023-03-11;
 
   // all further definitions here
@@ -87,8 +88,7 @@ While the base URL of `/restconf/data/` is not strictly neccessary, it is pretty
 
 ```
 module car {
-  container engine {
-  }
+  container engine {}
 }
 ```
 
@@ -247,8 +247,7 @@ leaf-lists can have all the same types as leaf, only it would container multiple
 
 ```
 module car {
-  rpc start {
-  }
+  rpc start {}
 }
 ```
 
@@ -626,9 +625,9 @@ module car {
 * **import** - pull in select YANG from another file. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.1.5)
 * **include** - pull in all YANG from another file. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.1.6)
 * **default** - value to use for leafs when no value is supplied. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.6.1)
-* **augment** - like grouping/uses but you can add definitions when using a grouping. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.17)
-* **refine** - when using `uses` and you want to alter specifc definition including adding constraints. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.13.2)
-* **leafref** - a reference to another leaf's data that must exist. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-9.9)
+* **augment** - used with `grouping`/`uses` to add definitions to a grouping. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.17)
+* **refine** - also used with `uses` to alter specific definition including adding constraints. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.13.2)
+* **leafref** - a reference to another leaf's data that must exist.  Kinda like a foreign key [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-9.9)
 * **when** - data definitions that only exist when certain data is true. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.21.5)
 * **must** - a constraint that is tied to other leaf's data. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.5.3)
 * **identity** - system wide enum that can have heirarchies. [RFC reference](https://datatracker.ietf.org/doc/html/rfc7950#section-7.18)

@@ -2,10 +2,10 @@
 title: "How does it work?"
 weight: 2
 description: >
-  Very High-level Description of How FreeCONF Works
+  Very high-level description of how FreeCONF works
 ---
 
-Software applications commonly employ a library, such as FreeCONF, which facilitates the exporting of their configuration, metrics, alerts, and functions as a RESTCONF compatible interface. Developers then define these elements using a specialized syntax known as YANG. Tools may optionally read and interpret the "YANG files" to gain an understanding of the application's management functions and subsequently communicate with the system as appropriate.
+Applications that use FreeCONF become available on the network to compatible DevOps tools through auto discovery or direct list of addresses and ports. DevOps tools can pull the list of management capabilities from applications. DevOps tools do not understand what the application is but it knows how to send or get configuration, pull or push metrics, call functions or listen to alerts.  As a DevOps engineer, you are still in control of **every management facet** the application makes available.
 
 To illustrate this concept, consider the hypothetical scenario where an individual has developed a novel toaster service and seeks to imbue it with manageability.
 

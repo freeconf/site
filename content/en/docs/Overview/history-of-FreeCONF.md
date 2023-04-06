@@ -1,6 +1,8 @@
 ---
 title: "Why the project?"
 weight: 4
+description: >
+  Brief history around why the project was created.
 ---
 
 *By Douglas Hubler*
@@ -14,3 +16,9 @@ In 2014, I transitioned to a new role in the networking field, where I became fa
 As a user of these standards, I was impressed with how they addressed interoperability, which led me to envision the potential for an open-source implementation of these standards that could be used in general-purpose application development. This solution would break free from the limitations of proprietary management tools and the plugin-oriented systems that I had contributed to in the past.
 
 Between 2015 and the present day, I have been actively implementing the YANG and RESTCONF standards. Throughout the development process, my main objectives were to ensure that the library did not interfere with developers' work and to make complex tasks possible while keeping simpler tasks easy.
+
+In 2023, ground broke on supporting Python.  After many attempts to port FreeCONF to other languages, we finally found a way that is scalable, maintainable and familiar to Python developers.  This same strategy can be used to support every language. This is still a work in progress but well past proof of concept.
+
+Also in 2023 support was added gNMI; a wire protocol that can work in replace of RESTCONF.  Not only did adding gNMI bring a greater set of DevOps tool support it remains completely abstract and optional for all applications that use FreeCONF.
+
+I cannot see DevOps in the same way now.  Ansible playbooks look like homework ripe with fleeting assumptions. Terraform plugins look endless. JuJu looks sexy but too few applications. Datadog integration looks like a decision that cannot be easily undone.  All of these tools are amazing and necessary but if each added support for these management standards then they would remove the burdon put on their community to build elaborate bridges just to use them.
