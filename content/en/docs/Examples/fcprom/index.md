@@ -27,7 +27,9 @@ The important point is not the time saving but that your application is not rest
 
 ## How it works
 
-The `fcprom.Bridge` walks thru each `Browser` in the local `Device` browing the YANG for metrics (i.e. `config false`) to build the Prometheus `/metrics` endpoint generating labels and descriptions from the YANG. Because YANG doesn't understand Prometheus' metrics types like `gauge` or `counter` or know how you want to flatten metrics in YANG `lists`, the `fcprom` module  uses YANG extensions to help translate. YANG extensions are ignored by other systems.
+The `fcprom.Bridge` walks thru each `Browser` in the local `Device` browsing the YANG for metrics (i.e. `config false`) to build the Prometheus `/metrics` endpoint generating labels and descriptions from the YANG and of course grabbing the metric value.
+
+Because YANG doesn't understand Prometheus' metrics types like `gauge` or `counter` or know how you want to flatten metrics in YANG `lists`, the `fcprom` module  uses YANG extensions to help your control the translation. YANG extensions are ignored by other systems.
 
 ### Defining some extensions
 
@@ -161,7 +163,7 @@ module car {
 
 ## Setup and Run Prometheues
 
-1.) [Download and install Prometheus](https://prometheus.io/docs/introduction/first_steps/)/
+1.) [Download and install Prometheus](https://prometheus.io/docs/introduction/first_steps/)
 
 2.) Start Prometheus with the example configuration here.
 
@@ -170,7 +172,7 @@ cd fcprom
 prometheus --config.file=prometheus.yml
 ```
 
-file:prometheus.yml
+file: `prometheus.yml`
 ```yaml
 global:
   scrape_interval:     15s
