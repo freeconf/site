@@ -130,3 +130,10 @@ Command: `gnmic --config car.yml --model car --path /`
   }
 ]
 ```
+
+## Tab Complete
+
+Called "prompt" mode in gnmic.
+
+![File Upload](images/prompt.png)
+

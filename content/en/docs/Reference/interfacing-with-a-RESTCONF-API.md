@@ -12,14 +12,15 @@ Traditional REST APIs struggle with what level of information to return for each
 
 RESTCONF APIs do not have this issue.  Clients can precisely control the data they want from depth, to list pagination. From selecting fields to excluding fields.
 
-With APIs developed with FreeCONF, each implemention has the control to only read the data that was requested. That is, granularity is not implemented as  a reponse filters like GraphQL.
+With APIs developed with FreeCONF, each implemention has the control to only read the data that was requested. That is, granularity is not implemented as a reponse filters like GraphQL after the data has already been extracted.
 
 ## Methods
 
 No surprises here:
 
-- `GET` - Getting read-write data (e.g. config), read-only data (e.g. metrics) and getting events in SSE format detailed later in this document.
-- `PUT` - Updating read-write data (e.g. config).  If objects are not found, they will be created so this is really an upsert.
+- `GET` - Getting configuration, metrics and notifications. Notificatons are in SSE format detailed later in this document.
+- `PATCH` - Updating configuration.  If objects are not found, they will be created so this is really an upsert.
+- `PUT` - Replacing configuration.  If objects are found, they will removed first then recreated with the given configuration.
 - `POST` - Creating read-write data (e.g. config). If objects are not found, **you will** get an error.
 - `DELETE` - Deleting read-write data.  If objects are not found, **you will not** get an error.
 - `OPTIONS` - Useful to test if user has access to certain data path

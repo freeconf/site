@@ -18,6 +18,7 @@ FreeCONF plays an important part of a larger community of people bringing togeth
 * [YANG/RESTCONF](https://en.wikipedia.org/wiki/YANG) on wikipedia
 * [RFCs]({{< relref "compliance/rfcs" >}})
 * [Network Programmability with YANG](https://a.co/d/bs8uOut) - Book by [Benoît Claise](https://www.claise.be/) on RESTCONF/YANG and related technologies.
+* [gNMI](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md) is gRPC over HTTP/2 based protocol as an alternative to RESTCONF.
 
 ## Examples
 * [Industry YANG files](https://www.yangcatalog.org/) - From yangcatalog.org project. Useful to see if others have modeled similar applications and/or examples models.
@@ -25,7 +26,7 @@ FreeCONF plays an important part of a larger community of people bringing togeth
 * [Bartender](https://github.com/dhubler/bartend) - Open source, robotic bartender built with FreeCONF.
 
 ## Tools and implementations
-
+* [gNMIc](https://gnmic.openconfig.net/) - a gNMI CLI client that provides full support for Capabilities, Get, Set and Subscribe RPCs with collector capabilities.  Of particular interest is the [terminal](https://gnmic.openconfig.net/user_guide/prompt_suggestions/) that supports tab complete on YANG.
 * [Ultra Config](https://ultraconfig.com.au/) - Manage configurations in the cloud.
 * [MG Soft](https://www.mg-soft.si/) - Thick client to walk RESTCONF compatible endpoints
 * [YumaWorks](https://www.yumaworks.com/) - C++ Drivers for RESTCONF among other things
@@ -33,18 +34,12 @@ FreeCONF plays an important part of a larger community of people bringing togeth
 * [Ansible - URI](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/uri_module.html) - RESTCONF client is so simple and Ansible support for REST APIs might be easier to use.
 * [ygot](https://github.com/openconfig/ygot) - Alternative to FreeCONF for generating Go code from YANG
 * [Watsen Networks SZTP Support](https://watsen.net/docs/sztpd/current/admin-guide/) - For bootstrapping startup configs even before call home requests.
-
-### gNMI
-
-[gNMI](https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md) is gRPC over HTTP/2 based protocol as an alternative to RESTCONF.
-
-* [Prometheus Support](https://github.com/openconfig/gnmi-gateway)
-* [Terraform](https://networkop.co.uk/post/2019-04-tf-yang/)
-* [gNMIc](https://gnmic.kmrd.dev/) - a gNMI CLI client that provides full support for Capabilities, Get, Set and Subscribe RPCs with collector capabilities.  Of particular interest is the [rich terminal](https://gnmic.kmrd.dev/user_guide/prompt_suggestions/).
+* [Terraform via gNMI](https://networkop.co.uk/post/2019-04-tf-yang/) - Early experiment but could be used to start something more.
+* [gNMI Gateway](https://github.com/openconfig/gnmi-gateway) - Includes Prometheus exporter
 
 ## Honorable Mention
 
-FreeCONF doesn't currently support these standards but they are in reach if these protocol were added to FreeCONF or these projects added support for RESTCONF or gNMI.
+FreeCONF doesn't currently support these p but they are in reach.  if these protocol were added to FreeCONF or these projects added support for RESTCONF or gNMI.
 
 ### NETCONF
 
