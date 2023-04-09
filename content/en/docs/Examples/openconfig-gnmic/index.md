@@ -135,5 +135,5 @@ Command: `gnmic --config car.yml --model car --path /`
 
 Called "prompt" mode in gnmic.
 
-![File Upload](images/prompt.png)
+![gNMIc prompt](images/prompt.png)
 
