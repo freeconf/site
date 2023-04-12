@@ -55,7 +55,7 @@ See [specification](https://datatracker.ietf.org/doc/html/rfc8040#section-4) for
 | Read | GET | `/restconf/data/car:` | Get's all data (configuration and metrics) for car module |
 | Read | GET | `/restconf/data/car:tire` | Get's all data for all tires |
 | Read | GET | `/restconf/data/car:tire=1` | Get's all data for first car tire. Yes, seeing an equals in a URL can be disconcerting, but it is legal. |
-| Update | PUT | `/restconf/data/car:cruise`<br>*body:*`{"desiredSpeed":65}` | Set cruise control desired speed |
+| Update | PATCH | `/restconf/data/car:cruise`<br>*body:*`{"desiredSpeed":65}` | Set cruise control desired speed |
 | Read | GET | `/restconf/data/car:tire?c2-range=!1-2` | Get's all data for car tires 1 and 2 |
 | Read | GET | `/restconf/data/car:tire?fields=wear%3did` | Get's only tire id and wear level for all tires. `%3d` is encoded `=`. |
 | Read | GET | `/restconf/data/car:tire?content=config&with-defaults=trim` | Get's only configuration that is changed from the default for all tires |
@@ -69,7 +69,7 @@ See [specification](https://datatracker.ietf.org/doc/html/rfc8040#section-4) for
 
 ## Events
 
-RESTCONF delivers events using SSE(Server State Events) over HTTP.  This is simply a stream per event stream.  HTTP/2 allows for an unlimited number of streams over a single connection. Each event is serialized JSON followed by 2 end-of-line characters so you know the event message boundaries.
+RESTCONF delivers events using [SSE(Server State Events)](https://html.spec.whatwg.org/multipage/server-sent-events.html#server-sent-events) over HTTP.  This is simply a stream per event stream.  HTTP/2 allows for an unlimited number of streams over a single connection. Each event is serialized JSON followed by 2 end-of-line characters so you know the event message boundaries.
 
 There is no special library required to read these messages and you can subscribe to as many event streams as you want w/o opening a new connection.
 
@@ -78,7 +78,7 @@ There is no special library required to read these messages and you can subscrib
 ```javascript
 // this looks like a new connection, but HTTP/2 sends it over existing connection
 // to unsubscribe, call  events.close();
-const events = new EventSource("/restconf/data/car:onStart");
+const events = new EventSource("/restconf/data/car:updates");
 events.addEventListener("message", (e) => {
    console.log(e.data);
  });
@@ -87,7 +87,7 @@ events.addEventListener("message", (e) => {
 ### Subscribing to events in CLI
 
 ```bash
-$ curl https://server/restconf/data/car:update
+$ curl https://server/restconf/data/car:updates
 data: {"tire":{"wear":80}}
 
 data: {"tire":{"wear":70}}
@@ -97,8 +97,8 @@ data: {"tire":{"wear":70}}
 
 | Path | Description |
 |--|--|
-| `update` | Any changes to car |
-| `update?filter=tire/wear<20` | Any changes to car when the tire wear is less than 20 |
+| `updates` | Any changes to car |
+| `updates?filter=tire/wear<20` | Any changes to car when the tire wear is less than 20 |
 
 ## More
 
