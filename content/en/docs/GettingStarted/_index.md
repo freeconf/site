@@ -46,7 +46,7 @@ module hello {
 
 ## Step 4.) Create an application
 
-There is a lot of flexibility on how you initialize RESTCONF, here is one way
+There is a lot of flexibility on how you initialize RESTCONF, here is one way, create file `main.go`
 
 ```go
 package main
@@ -99,7 +99,7 @@ func main() {
 
 ## Step 5.) Create a startup config
 
-Create this file with static configuration for your application and accompanying RESTCONF server
+Create this file with static configuration for your application and accompanying RESTCONF server in the file `startup.json`
 
 ```json
 {
@@ -127,7 +127,7 @@ go run ./main.go
 curl http://localhost:8080/restconf/data/hello:
 
 # set data
-curl -X PUT -d '{"message":"goodbye"}' http://localhost:8080/restconf/data/hello:
+curl -X PATCH -d '{"message":"goodbye"}' http://localhost:8080/restconf/data/hello:
 
 # read back new data
 curl http://localhost:8080/restconf/data/hello:
