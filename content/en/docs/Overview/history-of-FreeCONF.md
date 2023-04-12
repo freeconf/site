@@ -1,6 +1,6 @@
 ---
-title: "Why the project?"
-weight: 4
+title: "Project history"
+weight: 6
 description: >
   Brief history around why the project was created.
 ---
