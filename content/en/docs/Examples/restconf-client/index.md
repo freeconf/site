@@ -10,16 +10,21 @@ description: >
   Connecting to a RESTCONF server
 ---
 
-While you can easily interact with a RESTCONF server using any HTTP library, using a RESTCONF client can have advantages.  In particular it will let you walk a server and access the meta in the YANG alongside the data. FreeCONF gives you a client API that is similar to server API once you are connected.
-
+You can communicate with a RESTCONF server using a basic HTTP library.  For simple applications this is a reasonable approach.   If you want to "level-up" your API access to be able to walk the schema (i.e. YANG) then you can use the RESTCONF client in FreeCONF.
 
 ```go
 package demo
 
 import (
 	"fmt"
+	"strings"
+	"testing"
 
+	"github.com/freeconf/examples/car"
+	"github.com/freeconf/restconf"
 	"github.com/freeconf/restconf/client"
+	"github.com/freeconf/restconf/device"
+	"github.com/freeconf/yang/fc"
 	"github.com/freeconf/yang/node"
 	"github.com/freeconf/yang/nodeutil"
 	"github.com/freeconf/yang/source"
@@ -29,7 +34,7 @@ func connectClient() {
 
 	// YANG: just need YANG file ietf-yang-library.yang, not the yang of remote system as that will
 	// be downloaded as needed
-	ypath := source.Path("../yang")
+	ypath := restconf.InternalYPath
 
 	// Connect
 	proto := client.ProtocolHandler(ypath)
@@ -43,16 +48,23 @@ func connectClient() {
 	if err != nil {
 		panic(err)
 	}
+	root := car.Root()
+	defer root.Release()
 
 	// Example of config: I feel the need, the need for speed
 	// bad config is rejected in client before it is sent to server
-	err = car.Root().UpsertFrom(nodeutil.ReadJSON(`{"speed":100}`)).LastErr
+	err = root.UpsertFrom(nodeutil.ReadJSON(`{"speed":100}`))
 	if err != nil {
 		panic(err)
 	}
 
 	// Example of metrics: Get all metrics as JSON
-	metrics, err := nodeutil.WriteJSON(car.Root().Find("?content=nonconfig"))
+	sel, err := root.Find("?content=nonconfig")
+	if err != nil {
+		panic(err)
+	}
+	defer sel.Release()
+	metrics, err := nodeutil.WriteJSON(sel)
 	if err != nil {
 		panic(err)
 	}
@@ -61,13 +73,22 @@ func connectClient() {
 	}
 
 	// Example of RPC: Reset odometer
-	err = car.Root().Find("reset").Action(nil).LastErr
+	sel, err = root.Find("reset")
 	if err != nil {
+		panic(err)
+	}
+	defer sel.Release()
+	if _, err = sel.Action(nil); err != nil {
 		panic(err)
 	}
 
 	// Example of notification: Car has an important update
-	unsub, err := car.Root().Find("update").Notifications(func(n node.Notification) {
+	sel, err = root.Find("update")
+	if err != nil {
+		panic(err)
+	}
+	defer sel.Release()
+	unsub, err := sel.Notifications(func(n node.Notification) {
 		msg, err := nodeutil.WriteJSON(n.Event)
 		if err != nil {
 			panic(err)
@@ -86,39 +107,22 @@ func connectClient() {
 	}
 
 	// Example of config: Enable debug logging on FreeCONF's remote RESTCONF server
-	err = rcServer.Root().UpsertFrom(nodeutil.ReadJSON(`{"debug":true}`)).LastErr
+	serverSel := rcServer.Root()
+	defer serverSel.Release()
+	serverSel.UpsertFrom(nodeutil.ReadJSON(`{"debug":true}`))
 	if err != nil {
 		panic(err)
 	}
 }
 
-```
-
-### Additional Files
-
-file: `client_test.go`
-```go
-package demo
-
-import (
-	"strings"
-	"testing"
-
-	"github.com/freeconf/restconf"
-	"github.com/freeconf/restconf/device"
-	"github.com/freeconf/restconf/testdata"
-	"github.com/freeconf/yang/fc"
-	"github.com/freeconf/yang/source"
-)
-
 func TestClient(t *testing.T) {
 
 	// setup -  start a server
-	pathToYangFiles := "../yang"
-	serverYPath := source.Path(pathToYangFiles)
-	carServer := testdata.New()
+	ypath := source.Path("../car")
+	serverYPath := source.Any(ypath, restconf.InternalYPath)
+	carServer := car.New()
 	local := device.New(serverYPath)
-	local.Add("car", testdata.Manage(carServer))
+	local.Add("car", car.Manage(carServer))
 	s := restconf.NewServer(local)
 	defer s.Close()
 	cfg := `{

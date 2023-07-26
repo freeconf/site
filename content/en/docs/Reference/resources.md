@@ -39,7 +39,7 @@ FreeCONF plays an important part of a larger community of people bringing togeth
 
 ## Honorable Mention
 
-FreeCONF doesn't currently support these p but they are in reach.  if these protocol were added to FreeCONF or these projects added support for RESTCONF or gNMI.
+FreeCONF doesn't currently support these tools but they are in reach.  If these protocol were added to FreeCONF or these projects added support for RESTCONF or gNMI.
 
 ### NETCONF
 

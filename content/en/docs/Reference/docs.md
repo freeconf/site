@@ -56,7 +56,7 @@ dot -Tsvg fc-restconf.dot -o fc-restconf.svg
 fc-yang doc -f html -module fc-restconf -title "FreeCONF RESTCONF" -ypath yang > fc-restconf.html
 ```
 
-## Example cutput - HTML with SVG
+## Example output - HTML with SVG
 
 ![fc-restconf API](/docs-example-html.png)
 

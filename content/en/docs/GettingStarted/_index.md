@@ -11,42 +11,52 @@ description: >
   5 minute guide to using FreeCONF today.
 ---
 
-{{% pageinfo color="primary" %}}
-FreeCONF is available in Go, but Python will be available mid 2023 with other language support to follow.
-{{% /pageinfo %}}
 
 ## Step 1.) Get the source
+
+{{< tabs name="install" >}}
+{{% tab name="Go" %}}
 
 From an active Go project with `go` command in the `PATH` run this command
 
 ```bash
-go get  github.com/freeconf/restconf
+go get github.com/freeconf/restconf
 ```
+{{% /tab %}}
+{{% tab name="Python" %}}
 
-## Step 2.) Extract core YANG files
-
-This is necesssary for some built in services that require YANG files
+Install latest Python package.  
 
 ```bash
-mkdir yang
-go run github.com/freeconf/yang/cmd/fc-yang get -dir 'yang'
+pip install https://github.com/freeconf/lang/releases/download/v0.1.0-alpha/freeconf-0.1.0-py3-none-any.whl
+fc-lang-install -v
 ```
 
-## Step 3.) Create a basic YANG file
+The `fc-lang-install` script should not need root and simply downloads a single file containing FreeCONF core to `~/.freeconf/bin`.
 
-Create file `./yang/hello.yang` to describe your application management.
+{{% /tab %}}
+{{< /tabs >}}
+
+## Step 2.) Create a basic YANG file
+
+Create file `./hello.yang` to describe your application management.
 
 ```
 module hello {
-    leaf message {
-        type string;
-    }
+	leaf message {
+		type string;
+	}
 }
 ```
 
-## Step 4.) Create an application
+## Step 3.) Create an application
 
-There is a lot of flexibility on how you initialize RESTCONF, here is one way, create file `main.go`
+There is a lot of flexibility on how you initialize RESTCONF, here is one way.
+
+{{< tabs name="app_src" >}}
+{{% tab name="Go" %}}
+
+Create file `main.go`
 
 ```go
 package main
@@ -71,7 +81,7 @@ func main() {
 	app := MyApp{}
 
 	// where to find YANG files
-	ypath := source.Dir("./yang")
+	ypath := source.Any(source.Path("."), restconf.InternalYPath)
 
 	// organize modules.
 	d := device.New(ypath)
@@ -85,10 +95,10 @@ func main() {
 	rootNode := nodeutil.Reflect{}.Object(&app)
 	d.Add("hello", rootNode)
 
-	// create the RESTCONF server
+	// select RESTCONF as management protocol. gNMI is option as well
 	restconf.NewServer(d)
 
-	// this will apply configuration and startup web server
+	// this will apply configuration and starting RESTCONF web server
 	if err := d.ApplyStartupConfigFile("./startup.json"); err != nil {
 		log.Fatal(err)
 	}
@@ -96,8 +106,62 @@ func main() {
 	select {}
 }
 ```
+{{% /tab %}}
 
-## Step 5.) Create a startup config
+{{% tab name="Python" %}}
+
+Create file `getting-started.py`
+
+```python
+import freeconf.restconf
+import freeconf.source
+import freeconf.device
+import freeconf.parser
+import freeconf.nodeutil.reflect
+from threading import Event
+
+class MyApp:
+    def __init__(self):
+        self.message = None
+
+app = MyApp()
+
+# specify all the places you store YANG files
+ypath = freeconf.source.any(
+    freeconf.source.path("."),
+    freeconf.source.restconf_internal_ypath()
+)
+
+# device hosts one or more management "modules" into a single instance for export
+dev = freeconf.device.Device(ypath)
+
+# load and validate our YANG file
+mod = freeconf.parser.load_module_file(ypath, "hello")
+
+# your management implementation to your app instance. there are endless ways to
+# to build your management interface from code generation, to reflection and any
+# combination there of.  Here we use reflection for our simple app
+mgmt = freeconf.nodeutil.reflect.Reflect(app)
+
+# device can host multiple modules, here we just register our one app
+b = freeconf.node.Browser(mod, mgmt)
+dev.add_browser(b)
+
+# select RESTCONF as management protocol. gNMI is option as well
+s = freeconf.restconf.Server(dev)
+
+# this will apply configuration including starting RESTCONF web server
+dev.apply_startup_config("./startup.json")
+
+# simple python trick to wait until shutdown
+Event().wait()
+```
+
+{{% /tab %}}
+{{< /tabs >}}
+
+
+## Step 4.) Create a startup config
 
 Create this file with static configuration for your application and accompanying RESTCONF server in the file `startup.json`
 
@@ -114,13 +178,26 @@ Create this file with static configuration for your application and accompanying
 }
 ```
 
-## Step 6.) Startup your application
+## Step 5.) Startup your application
+
+{{< tabs name="run" >}}
+{{% tab name="Go" %}}
 
 ```bash
 go run ./main.go
 ```
+{{% /tab %}}
 
-## Step 7.) Test your API
+{{% tab name="Python" %}}
+
+```bash
+python3 ./getting-started.py
+```
+
+{{% /tab %}}
+{{< /tabs >}}
+
+## Step 6.) Test your API
 
 ```bash
 # read data
