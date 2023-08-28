@@ -42,14 +42,10 @@ import (
 )
 
 // ////////////////////////
-// C A R
-// Your application code.
+// C A R - example application
 //
-// Notice there are no reference to FreeCONF in this file.  This means your
-// code remains:
-// - unit test-able
-// - Not auto-generated from model files
-// - free of golang source code annotations/tags.
+// This has nothing to do with FreeCONF, just an example application written in Go.
+// that models a running car that can get flat tires when tires are worn.
 type Car struct {
 	Tire []*Tire
 
@@ -73,17 +69,19 @@ type Car struct {
 	listeners *list.List
 }
 
-type CarListener func(updateEvent)
+// CarListener for receiving car update events
+type CarListener func(UpdateEvent)
 
-type updateEvent int
+// car event types
+type UpdateEvent int
 
 const (
-	carStarted updateEvent = iota + 1
-	carStopped
-	flatTire
+	CarStarted UpdateEvent = iota + 1
+	CarStopped
+	FlatTire
 )
 
-func (e updateEvent) String() string {
+func (e UpdateEvent) String() string {
 	strs := []string{
 		"unknown",
 		"carStarted",
@@ -102,20 +100,8 @@ func New() *Car {
 		Speed:        1000,
 		PollInterval: time.Second,
 	}
-	c.newTires()
+	c.NewTires()
 	return c
-}
-
-func (c *Car) newTires() {
-	c.Tire = make([]*Tire, 4)
-	c.LastRotation = int64(c.Miles)
-	for pos := 0; pos < len(c.Tire); pos++ {
-		c.Tire[pos] = &Tire{
-			Pos:  pos,
-			Wear: 100,
-			Size: "H15",
-		}
-	}
 }
 
 // Stop will take up to poll_interval seconds to come to a stop
@@ -129,10 +115,10 @@ func (c *Car) Start() {
 	}
 	go func() {
 		c.Running = true
-		c.updateListeners(carStarted)
+		c.updateListeners(CarStarted)
 		defer func() {
 			c.Running = false
-			c.updateListeners(carStopped)
+			c.updateListeners(CarStopped)
 		}()
 		for c.Speed > 0 {
 			poll := time.NewTicker(c.PollInterval)
@@ -142,7 +128,7 @@ func (c *Car) Start() {
 					for _, t := range c.Tire {
 						t.endureMileage(c.Speed)
 						if t.Flat {
-							c.updateListeners(flatTire)
+							c.updateListeners(FlatTire)
 							return
 						}
 					}
@@ -157,23 +143,26 @@ func (c *Car) OnUpdate(l CarListener) Subscription {
 	return NewSubscription(c.listeners, c.listeners.PushBack(l))
 }
 
-func (c *Car) updateListeners(e updateEvent) {
-	fmt.Printf("car %s\n", e)
-	i := c.listeners.Front()
-	for i != nil {
-		i.Value.(CarListener)(e)
-		i = i.Next()
+func (c *Car) NewTires() {
+	c.Tire = make([]*Tire, 4)
+	c.LastRotation = int64(c.Miles)
+	for pos := 0; pos < len(c.Tire); pos++ {
+		c.Tire[pos] = &Tire{
+			Pos:  pos,
+			Wear: 100,
+			Size: "H15",
+		}
 	}
 }
 
-func (c *Car) replaceTires() {
+func (c *Car) ReplaceTires() {
 	for _, t := range c.Tire {
-		t.replace()
+		t.Replace()
 	}
 	c.LastRotation = int64(c.Miles)
 }
 
-func (c *Car) rotateTires() {
+func (c *Car) RotateTires() {
 	x := c.Tire[0]
 	c.Tire[0] = c.Tire[1]
 	c.Tire[1] = c.Tire[2]
@@ -185,6 +174,15 @@ func (c *Car) rotateTires() {
 	c.LastRotation = int64(c.Miles)
 }
 
+func (c *Car) updateListeners(e UpdateEvent) {
+	fmt.Printf("car %s\n", e)
+	i := c.listeners.Front()
+	for i != nil {
+		i.Value.(CarListener)(e)
+		i = i.Next()
+	}
+}
+
 // T I R E
 type Tire struct {
 	Pos  int
@@ -194,7 +192,7 @@ type Tire struct {
 	Worn bool
 }
 
-func (t *Tire) replace() {
+func (t *Tire) Replace() {
 	t.Wear = 100
 	t.Flat = false
 	t.Worn = false
@@ -218,6 +216,9 @@ func (t *Tire) endureMileage(speed int) {
 func (t *Tire) checkForWear() bool {
 	return t.Wear < 20
 }
+
+///////////////////////
+// U T I L
 
 // Subscription is handle into a list.List that when closed
 // will automatically remove item from list.  Useful for maintaining
@@ -408,26 +409,27 @@ import (
 )
 
 // Quick test of car's features using direct access to fields and methods
+// again, nothing to do with FreeCONF.
 func TestCar(t *testing.T) {
 	c := New()
 	c.PollInterval = time.Millisecond
 	c.Speed = 1000
 
-	events := make(chan updateEvent)
-	unsub := c.OnUpdate(func(e updateEvent) {
+	events := make(chan UpdateEvent)
+	unsub := c.OnUpdate(func(e UpdateEvent) {
 		fmt.Printf("got event %s\n", e)
 		events <- e
 	})
 	t.Log("waiting for car events...")
 	c.Start()
 
-	fc.AssertEqual(t, carStarted, <-events)
-	fc.AssertEqual(t, flatTire, <-events)
-	fc.AssertEqual(t, carStopped, <-events)
-	c.replaceTires()
+	fc.AssertEqual(t, CarStarted, <-events)
+	fc.AssertEqual(t, FlatTire, <-events)
+	fc.AssertEqual(t, CarStopped, <-events)
+	c.ReplaceTires()
 	c.Start()
 
-	fc.AssertEqual(t, carStarted, <-events)
+	fc.AssertEqual(t, CarStarted, <-events)
 	unsub.Close()
 	c.Stop()
 }
@@ -654,7 +656,9 @@ module car {
 
 ## 4. Management source using FreeCONF
 
-Write the code for the management API that aligns with the YANG file and connects the API to the car.
+Here we use FreeCONF's nodeutil.Node that uses reflection to implement the managment functions. 
+
+This is far from the only way to implement this, you can [generate code](../codegeneration/) or implement your own logic that implements the `node.Node` interface.
 
 {{< tabs name="manage_src" >}}
 {{% tab name="Go" %}}
@@ -663,61 +667,55 @@ file : `manage.go`
 package car
 
 import (
+	"reflect"
 	"time"
 
+	"github.com/freeconf/yang/meta"
 	"github.com/freeconf/yang/node"
 	"github.com/freeconf/yang/nodeutil"
-	"github.com/freeconf/yang/val"
 )
 
-/////////////////////////
+// ///////////////////////
 // C A R    M A N A G E M E N T
-//  Bridge from model to car app.
-
+//
+// Manage your car application using FreeCONF library according to the car.yang
+// model file.
+//
 // Manage is root handler from car.yang. i.e. module car { ... }
-func Manage(c *Car) node.Node {
+func Manage(car *Car) node.Node {
 
-	// Extend and Reflect form a powerful combination, we're letting reflect do a lot of the CRUD
-	// when the yang file matches the field names.  But we extend reflection
+	// We're letting reflect do a lot of the work when the yang file matches
+	// the field names and methods in the objects.  But we extend reflection
 	// to add as much custom behavior as we want
-	return &nodeutil.Extend{
-		Base: nodeutil.ReflectChild(c),
+	return &nodeutil.Node{
 
-		// implement navigation by containers and lists defined in yang file
-		OnChild: func(p node.Node, r node.ChildRequest) (node.Node, error) {
-			switch r.Meta.Ident() {
-			case "tire":
-				return manageTires(c.Tire), nil
-			default:
-				// delegate back to "Base" handler should there be any default
-				// handling
-				return p.Child(r)
-			}
-		},
+		// Initial object. Note: as the tree is traversed, new Node instances
+		// will have different values in their Object reference
+		Object: car,
 
 		// implement RPCs
-		OnAction: func(p node.Node, r node.ActionRequest) (node.Node, error) {
+		OnAction: func(n *nodeutil.Node, r node.ActionRequest) (node.Node, error) {
 			switch r.Meta.Ident() {
-			case "start":
-				c.Start()
-			case "stop":
-				c.Stop()
-			case "rotateTires":
-				c.rotateTires()
-			case "replaceTires":
-				c.replaceTires()
 			case "reset":
-				c.Miles = 0
+				// here we implement custom handler for action just as an example
+				// If there was a Reset() method on car the default OnAction
+				// handler would be able to call Reset like all the other functions
+				car.Miles = 0
+			default:
+				// all the actions like start, stop and rotateTire are called
+				// thru reflecton here because their method names align with
+				// the YANG.
+				return n.DoAction(r)
 			}
 			return nil, nil
 		},
 
-		// implement yang notifications which are really just events
-		OnNotify: func(p node.Node, r node.NotifyRequest) (node.NotifyCloser, error) {
+		// implement yang notifications (which are really just event streams)
+		OnNotify: func(p *nodeutil.Node, r node.NotifyRequest) (node.NotifyCloser, error) {
 			switch r.Meta.Ident() {
 			case "update":
 				// can use an adhoc struct send event
-				sub := c.OnUpdate(func(e updateEvent) {
+				sub := car.OnUpdate(func(e UpdateEvent) {
 					msg := struct {
 						Event int
 					}{
@@ -730,75 +728,38 @@ func Manage(c *Car) node.Node {
 				// we return a close **function**, we are not actually closing here
 				return sub.Close, nil
 			}
+
+			// there is no default implementation at this time, all notification streams
+			// require custom handlers.
 			return p.Notify(r)
 		},
 
 		// implement fields that are not automatically handled by reflection.
-		OnField: func(p node.Node, r node.FieldRequest, hnd *node.ValueHandle) error {
-			switch r.Meta.Ident() {
-			case "pollInterval":
-				// another option for this is register field handler for reflection so that
-				// it would handle this w/o having to implement OnField here
-				if r.Write {
-					c.PollInterval = time.Duration(hnd.Val.Value().(int)) * time.Millisecond
-				} else {
-					hnd.Val = val.Int32(int(c.PollInterval / time.Millisecond))
+		OnRead: func(p *nodeutil.Node, r meta.Definition, t reflect.Type, v reflect.Value) (reflect.Value, error) {
+			if l, ok := r.(meta.Leafable); ok {
+				// use "units" in yang to tell what to convert.
+				//
+				// Other useful ways to intercept custom reflection reads:
+				// 1.) incoming reflect.Type t
+				// 2.) field name used in yang or some pattern of the name (suffix, prefix, regex)
+				// 3.) yang extension
+				// 4.) any combination of these
+				if l.Units() == "millisecs" {
+					return reflect.ValueOf(v.Int() / int64(time.Millisecond)), nil
 				}
-			default:
-				return p.Field(r, hnd)
 			}
-			return nil
+			return v, nil
 		},
-	}
-}
 
-// tiresNode handles list of tires.
-//
-//	list tire { ... }
-func manageTires(tires []*Tire) node.Node {
-	return &nodeutil.Basic{
-		OnNextItem: func(r node.ListRequest) nodeutil.BasicNextItem {
-			var t *Tire
-			return nodeutil.BasicNextItem{
-				GetByKey: func() error {
-					// request for a specific tire by key (pos)
-					pos := r.Key[0].Value().(int)
-					if pos < len(tires) {
-						t = tires[pos]
-					}
-					return nil
-				},
-				GetByRow: func() ([]val.Value, error) {
-					// request for nth tire in list
-					if r.Row < len(tires) {
-						t = tires[r.Row]
-						return []val.Value{val.Int32(r.Row)}, nil
-					}
-					return nil, nil
-				},
-				Node: func() (node.Node, error) {
-					if t != nil {
-						return ManageTire(t), nil
-					}
-					return nil, nil
-				},
+		// Generally the reverse of what is handled in OnRead
+		OnWrite: func(p *nodeutil.Node, r meta.Definition, t reflect.Type, v reflect.Value) (reflect.Value, error) {
+			if l, ok := r.(meta.Leafable); ok {
+				if l.Units() == "millisecs" {
+					d := time.Duration(v.Int()) * time.Millisecond
+					return reflect.ValueOf(d), nil
+				}
 			}
-		},
-	}
-}
-
-// TireNode handles each tire node.  Everything *inside* list tire { ... }
-func ManageTire(t *Tire) node.Node {
-	// again, let reflection do a lot of the work with one extension to handle replace tire
-	// action
-	return &nodeutil.Extend{
-		Base: nodeutil.ReflectChild(t),
-		OnAction: func(parent node.Node, r node.ActionRequest) (output node.Node, err error) {
-			switch r.Meta.Ident() {
-			case "replace":
-				t.replace()
-			}
-			return nil, nil
+			return v, nil
 		},
 	}
 }
@@ -909,7 +870,7 @@ def manage_tire(t):
 
 ## 5. Management unit test
 
-Write unit test for you management API
+Write unit test for you management API without starting a server.  You can read or write configuration, call functions, listen to events or read metrics all from your unit test.
 
 {{< tabs name="manage_test" >}}
 {{% tab name="Go" %}}
@@ -940,7 +901,7 @@ func TestManage(t *testing.T) {
 	root := brwsr.Root()
 
 	// read all config
-	currCfg, err := nodeutil.WriteJSON(find(root, "?content=config"))
+	currCfg, err := nodeutil.WriteJSON(sel(root.Find("?content=config")))
 	fc.AssertEqual(t, nil, err)
 	expected := `{"speed":1000,"pollInterval":1000,"tire":[{"pos":0,"size":"H15"},{"pos":1,"size":"H15"},{"pos":2,"size":"H15"},{"pos":3,"size":"H15"}]}`
 	fc.AssertEqual(t, expected, currCfg)
@@ -950,7 +911,7 @@ func TestManage(t *testing.T) {
 
 	// setup event listener, verify events later
 	events := make(chan string)
-	unsub, err := find(root, "update").Notifications(func(n node.Notification) {
+	unsub, err := sel(root.Find("update")).Notifications(func(n node.Notification) {
 		event, _ := nodeutil.WriteJSON(n.Event)
 		events <- event
 	})
@@ -963,7 +924,7 @@ func TestManage(t *testing.T) {
 	fc.AssertEqual(t, 2000, app.Speed)
 
 	// start car
-	fc.AssertEqual(t, nil, justErr(find(root, "start").Action(nil)))
+	fc.AssertEqual(t, nil, justErr(sel(root.Find("start")).Action(nil)))
 
 	// should be first event
 	fc.AssertEqual(t, `{"event":"carStarted"}`, <-events)
@@ -974,18 +935,17 @@ func TestManage(t *testing.T) {
 	fc.AssertEqual(t, 0, app.listeners.Len())
 
 	// hit all the RPCs
-	fc.AssertEqual(t, nil, justErr(find(root, "rotateTires").Action(nil)))
-	fc.AssertEqual(t, nil, justErr(find(root, "replaceTires").Action(nil)))
-	fc.AssertEqual(t, nil, justErr(find(root, "reset").Action(nil)))
-	fc.AssertEqual(t, nil, justErr(find(root, "tire=0/replace").Action(nil)))
+	fc.AssertEqual(t, nil, justErr(sel(root.Find("rotateTires")).Action(nil)))
+	fc.AssertEqual(t, nil, justErr(sel(root.Find("replaceTires")).Action(nil)))
+	fc.AssertEqual(t, nil, justErr(sel(root.Find("reset")).Action(nil)))
+	fc.AssertEqual(t, nil, justErr(sel(root.Find("tire=0/replace")).Action(nil)))
 }
 
-func find(sel *node.Selection, path string) *node.Selection {
-	found, err := sel.Find(path)
+func sel(s *node.Selection, err error) *node.Selection {
 	if err != nil {
 		panic(err)
 	}
-	return found
+	return s
 }
 
 func justErr(_ *node.Selection, err error) error {
