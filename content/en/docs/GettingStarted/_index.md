@@ -113,11 +113,7 @@ func main() {
 Create file `getting-started.py`
 
 ```python
-import freeconf.restconf
-import freeconf.source
-import freeconf.device
-import freeconf.parser
-import freeconf.nodeutil.reflect
+from freeconf import restconf, source, device, parser, node, source, nodeutil
 from threading import Event
 
 class MyApp:
@@ -126,32 +122,35 @@ class MyApp:
 
 app = MyApp()
 
-# specify all the places you store YANG files
-ypath = freeconf.source.any(
-    freeconf.source.path("."),
-    freeconf.source.restconf_internal_ypath()
+# specify all the places where you store YANG files
+ypath = source.any(
+    source.path("."),
+    source.restconf_internal_ypath()
 )
 
-# device hosts one or more management "modules" into a single instance for export
-dev = freeconf.device.Device(ypath)
+# load and validate your YANG file
+mod = parser.load_module_file(ypath, "hello")
 
-# load and validate our YANG file
-mod = freeconf.parser.load_module_file(ypath, "hello")
+# device hosts one or more management "modules" into a single instance that you
+# want to export in management interface
+dev = device.Device(ypath)
 
-# your management implementation to your app instance. there are endless ways to
-# to build your management interface from code generation, to reflection and any
-# combination there of.  Here we use reflection for our simple app
-mgmt = freeconf.nodeutil.reflect.Reflect(app)
+# connect your application to your management implementation.
+# there are endless ways to to build your management interface from code generation,
+# to reflection and any combination there of.  A lot more information in docs.
+mgmt = nodeutil.Node(app)
 
-# device can host multiple modules, here we just register our one app
-b = freeconf.node.Browser(mod, mgmt)
+# connect parsed YANG to your management implementation.
+b = node.Browser(mod, mgmt)
+
+# register your  our app management 
 dev.add_browser(b)
 
 # select RESTCONF as management protocol. gNMI is option as well
-s = freeconf.restconf.Server(dev)
+s = restconf.Server(dev)
 
 # this will apply configuration including starting RESTCONF web server
-dev.apply_startup_config("./startup.json")
+dev.apply_startup_config_file("./startup.json")
 
 # simple python trick to wait until shutdown
 Event().wait()
