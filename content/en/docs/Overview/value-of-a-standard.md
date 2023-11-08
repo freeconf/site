@@ -7,7 +7,7 @@ description: >
 
 Standards obviate the need for integration because both sides can communicate using a predetermined protocol.  You don't need to build your own adapter if you can plug right in!
 
-Standards like TCP/IP allowed computers from different networks to communicate without having support for each other's specific networking stack.  SMTP did the same for electronic messages amd HTML/HTTP did it for information.
+Standards like TCP/IP allowed computers from different networks to communicate without having support for each other's specific networking stack.  SMTP did the same for electronic messages and HTML/HTTP did it for information.
 
 Are RESTCONF, YANG and gNMI the next standard for application management? They might be, but whatever it is, with a library like FreeCONF, you don't need to care. As new standards emerge the FreeCONF community will support it and your code doesn't need to change.
 

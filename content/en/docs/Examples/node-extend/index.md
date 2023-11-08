@@ -106,18 +106,17 @@ func manage(b *Bird) node.Node {
 {{% /tab %}}
 {{% tab name="Python" %}}
 ```python
-import freeconf.nodeutil
-import freeconf.val
+from freeconf import nodeutil, val
 
 def manage_bird(bird):
-    base = freeconf.nodeutil.Reflect(bird)
+    base = nodeutil.Node(bird)
     
     def on_field(parent, req, write_val):
         if req.meta.ident == "location":
-            return freeconf.val.Val(freeconf.val.Format.STRING, bird.coordinates())
+            return val.Val(bird.coordinates())
         return parent.field(req, write_val)
     
-    return freeconf.nodeutil.Extend(base, on_field=on_field)
+    return nodeutil.Extend(base, on_field=on_field)
 ```
 {{% /tab %}}
 {{< /tabs >}}
@@ -160,8 +159,7 @@ file: `test_manage.py`
 ```python
 #!/usr/bin/env python3
 import unittest 
-import freeconf.parser
-import freeconf.nodeutil
+from freeconf import parser, nodeutil, source, node
 from manage import manage_bird
 from bird import Bird 
 
@@ -169,18 +167,16 @@ class TestManage(unittest.TestCase):
 
     def test_manage(self):
         app = Bird("sparrow", 99, 1000)
-        p = freeconf.parser.Parser()
-        m = p.load_module('..', 'bird')
+        ypath = source.path('..')
+        m = parser.load_module_file(ypath, 'bird')
         mgmt = manage_bird(app)
-        bwsr = freeconf.node.Browser(m, mgmt)
+        bwsr = node.Browser(m, mgmt)
         root = bwsr.root()
         try:
-            root.upsert_into(freeconf.nodeutil.json_write("tmp"))
+            actual = nodeutil.json_write_str(root)
+            self.assertEqual('{"name":"sparrow","location":"99,1000"}', actual)
         finally:
             root.release()
-        with open("tmp", "r") as f:
-            self.assertEqual('{"name":"sparrow","location":"99,1000"}', f.read())
-
 
 if __name__ == '__main__':
     unittest.main()

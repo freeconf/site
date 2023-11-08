@@ -1,6 +1,6 @@
 ---
-title: Node/Basic
-weight: 30
+title: Development Guide
+weight: 2
 tags:
   - go
   - python
@@ -112,23 +112,23 @@ You cannot use `Reflect` here because fields are private.
 
 {{% tab name="Python" %}}
 ```python
-import freeconf.nodeutil
+from freeconf import nodeutil
 
+def manage_app(app):
 
-class ManageApp(freeconf.nodeutil.Basic):
-
-    def __init__(self, app):
-        super().__init__()
-        self.app = app        
-
-    def child(self, req):
+    def child(req):
         if req.meta.ident == 'users':
-            return freeconf.nodeutil.Reflect(self.app.users)
+            return nodeutil.Node(app.users)
         elif req.meta.ident == 'fonts':
-            return freeconf.nodeutil.Reflect(self.app.fonts)
+            return nodeutil.Node(app.fonts)
         elif req.meta.ident == 'bagels':
-            return freeconf.nodeutil.Reflect(self.app.bagels)
+            return nodeutil.Node(app.bagels)
         return None
+    
+    # while this could easily be nodeutil.Node, we illustrate a Basic
+    # node should you want essentially an abstract class that stubs all 
+    # this calls with reasonable default handlers
+    return nodeutil.Basic(on_child=child)
 
 ```
 {{% /tab %}}
@@ -174,27 +174,24 @@ file: `test_manage.py`
 ```python
 #!/usr/bin/env python3
 import unittest 
-import freeconf.parser
-import freeconf.nodeutil
-from manage import ManageApp
+from freeconf import parser, nodeutil, node, source
+from manage import manage_app
 from app import App 
 
 class TestManage(unittest.TestCase):
 
     def test_manage(self):
         app = App()
-        p = freeconf.parser.Parser()
-        m = p.load_module('..', 'my-app')
-        mgmt = ManageApp(app)
-        bwsr = freeconf.node.Browser(m, mgmt)
+        ypath = source.path("..")
+        m = parser.load_module_file(ypath, 'my-app')
+        mgmt = manage_app(app)
+        bwsr = node.Browser(m, mgmt)
         root = bwsr.root()
         try:
-            root.upsert_into(freeconf.nodeutil.json_write("tmp"))
+            actual = nodeutil.json_write_str(root)
+            self.assertEqual('{"users":{},"fonts":{},"bagels":{}}', actual)
         finally:
             root.release()
-        with open("tmp", "r") as f:
-            self.assertEqual('{"users":{},"fonts":{},"bagels":{}}', f.read())
-
 
 if __name__ == '__main__':
     unittest.main()
