@@ -27,7 +27,7 @@ python -m pip install -r requirements.txt
 file: `requirements.txt`
 ```
 ansible==7.0.0
-ansible-core==2.11.12
+ansible-core==2.15.8
 
 ```
 

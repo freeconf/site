@@ -125,19 +125,19 @@ class MyApp:
 app = MyApp()
 
 # The remaining is FreeCONF specific and shows how to build a management interface
-# to you python application
+# to your python application
 
 # specify all the places where you store YANG files
 ypath = source.any(
-    source.path("."),
-    source.restconf_internal_ypath()
+    source.path("."),                   # director to your local *.yang files
+    source.restconf_internal_ypath()    # required for restconf protocol support
 )
 
-# load and validate your YANG file
+# load and validate your YANG file(s)
 mod = parser.load_module_file(ypath, "hello")
 
 # device hosts one or more management "modules" into a single instance that you
-# want to export in management interface
+# want to export in the management interface
 dev = device.Device(ypath)
 
 # connect your application to your management implementation.
@@ -146,19 +146,18 @@ dev = device.Device(ypath)
 mgmt = nodeutil.Node(app)
 
 # connect parsed YANG to your management implementation.  Browser is a powerful way
-# to dynamically control your application that is useful in unit tests or other contexts
-# but here we construct it to serve our API 
+# to dynamically control your application can can be useful in unit tests or other contexts
+# but here we construct it to serve our management API
 b = node.Browser(mod, mgmt)
 
-# register your app management browser in device.  Device can hold any number of browser
-# objects.
+# register your app management browser in device.  Device can hold any number of browsers
 dev.add_browser(b)
 
 # select RESTCONF as management protocol. gNMI is option as well or any custom or 
-# future protocol
+# future protocols
 s = restconf.Server(dev)
 
-# this will apply configuration including starting RESTCONF web server
+# this will apply configuration including starting the RESTCONF web server
 dev.apply_startup_config_file("./startup.json")
 
 # simple python trick to wait until ctrl-c shutdown
